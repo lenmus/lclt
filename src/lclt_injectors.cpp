@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 // This file is part of the "Lomse Command Line Tool" (lclt) program
-// Copyright (c) 2015-2020 LenMus project
+// Copyright (c) 2015-2021 LenMus project
 //
 // This program is free software; you can redistribute it and/or modify it under the
 // terms of the GNU General Public License as published by the Free Software Foundation,
@@ -75,8 +75,8 @@ void ApplicationScope::initialize_lomse()
 //    cout.rdbuf (m_lomseReporter.rdbuf());
 
     //Now, initialize the library:
-    // pixmap RGB 24 bits, default resolution 96 ppi, y axis is not reversed
-    m_lomse.init_library(k_pix_format_rgb24, 96, false);
+    // pixmap RGB 24 bits, default resolution 96 ppi
+    m_lomse.init_library(k_pix_format_rgb24, 96);
 }
 
 //---------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------------------
 // This file is part of the "Lomse Command Line Tool" (lclt) program
-// Copyright (c) 2015-2020 LenMus project
+// Copyright (c) 2015-2021 LenMus project
 //
 // This program is free software; you can redistribute it and/or modify it under the
 // terms of the GNU General Public License as published by the Free Software Foundation,
@@ -174,20 +174,14 @@ void CommandProcessor::export_img(const string& filename)
 
             RenderingBuffer rbuf_print;
             wxImage* buffer = NULL;         //the wxImage to serve as buffer
-            unsigned char* pdata;           //ptr to the real bytes buffer
             #define BYTES_PP 3              //bytes per pixel
             VPoint viewport(0,0);
             long prevBufSize = 0L;
 
-            //force to layout, for determining scale
-            spInteractor->on_document_updated();
-            Document* pDoc = m_pPresenter->get_document_raw_ptr();
-            float scale = pDoc->get_page_content_scale();
-            spInteractor->set_print_ppi( 96.0 * scale );
-
             int width = m_app.image_width();
             int height = m_app.image_height();
             long curBufSize = width * height;
+            spInteractor->set_print_page_size(width, height);
 
             //loop to create images for pages
             for (int page=1; page <= maxPage; ++page)
@@ -213,10 +207,8 @@ void CommandProcessor::export_img(const string& filename)
                 {
                     delete buffer;
                     buffer = new wxImage(width, height);    // allocate the rendering buffer
-                    int stride = width * BYTES_PP;          //number of bytes per row
-                    pdata = buffer->GetData();
-                    rbuf_print.attach(pdata, width, height, stride);
-                    spInteractor->set_print_buffer(&rbuf_print);
+                    unsigned char* pdata = buffer->GetData();       //ptr to the real bytes buffer
+                    spInteractor->set_print_buffer(pdata, width, height);
                     prevBufSize = curBufSize;
                 }
 
